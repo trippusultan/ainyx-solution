@@ -1,332 +1,156 @@
-import React, { useState } from 'react'
-import { Card, Badge, Button, Input } from '../components'
+import React from 'react'
+import './../styles/canvas.css'
+import { GitHubIcon, PostgresIcon, RedisIcon, MongoIcon, ChevronDownIcon, MoreIcon, ShareIcon, SunIcon, MoonIcon, SettingsIcon, ClockIcon, CheckIcon, AlertIcon, ZoomIcon, HelpIcon } from '../components'
+
+const SERVICES = [
+  { id: 'build', label: 'Build', Icon: GitHubIcon, status: 'To be deployed', tone: 'default' },
+  { id: 'postgres', label: 'Postgres', Icon: PostgresIcon, status: 'Success', tone: 'success' },
+  { id: 'redis', label: 'Redis', Icon: RedisIcon, status: 'Error', tone: 'error' },
+  { id: 'mongodb', label: 'Mongodb', Icon: MongoIcon, status: 'Error', tone: 'error' },
+]
+
+const STATUSES = {
+  default: { color: '#9fb7ff', Icon: ClockIcon },
+  success: { color: '#5ceabc', Icon: CheckIcon },
+  error: { color: '#fa5252', Icon: AlertIcon },
+}
+
+const STATS = [
+  { label: 'CPU', value: '0.02' },
+  { label: 'Memory', value: '0.05 GB' },
+  { label: 'Disk', value: '10.00 GB' },
+  { label: 'Region', value: '1' },
+]
+
+const TABS = ['CPU', 'Memory', 'Disk', 'Region']
 
 export default function CanvasTask() {
-  const [search, setSearch] = useState('')
-  const [filter, setFilter] = useState('All')
-  const [view, setView] = useState('active')
-
-  const task = {
-    id: '#TK-1042',
-    title: 'Update onboarding flow for new users',
-    description:
-      'Redesign the onboarding experience to reduce drop-off rates. Focus on clarity, guidance, and progressive disclosure.',
-    status: 'In Progress',
-    statusColor: 'blue',
-    priority: 'High',
-    due: '2026-06-18',
-    assignee: 'Ganesh J.',
-    category: 'Design System',
-    tag: 'Core',
-  }
-
-  const steps = [
-    { id: '1', label: 'Research & Discovery', done: true },
-    { id: '2', label: 'Wireframing', done: true },
-    { id: '3', label: 'Visual Design', done: true },
-    { id: '4', label: 'Prototype Review', done: false },
-    { id: '5', label: 'Developer Handoff', done: false },
-  ]
-
-  const activity = ['Sarah updated the design specs.', 'Mike commented on the prototype.', 'You marked Wireframing as done.']
   return (
-    <div
-      style={{
-        minHeight: '100vh',
-        background: '#f5f5f7',
-      }}
-    >
-      {/* Top bar */}
-      <header
-        style={{
-          height: '56px',
-          background: '#ffffff',
-          borderBottom: '1px solid #e5e7eb',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          padding: '0 24px',
-          position: 'sticky',
-          top: 0,
-          zIndex: 10,
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <div
-            style={{
-              width: '28px',
-              height: '28px',
-              background: '#2563eb',
-              borderRadius: '8px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: '#fff',
-              fontWeight: '700',
-              fontSize: '13px',
-            }}
-          >
-            A
+    <div className="App">
+      <header className="ainyx-nav">
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <div style={{ width: 28, height: 28, borderRadius: 8, background: '#f7faf8', color: '#0b0c10', display: 'grid', placeItems: 'center', fontWeight: 800, fontSize: 14, border: '1px solid rgba(0,0,0,0.03)' }}>S</div>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(235,233,230,0.08)', color: '#f7faf8', border: '1px solid rgba(235,233,230,0.18)', padding: '6px 12px', borderRadius: 10, fontSize: 13, fontWeight: 500 }}>
+            <span aria-hidden="true" style={{ fontSize: 14 }}>💡</span>
+            supertokens-golang
+            <button style={{ background: 'transparent', border: 'none', color: 'inherit', display: 'inline-flex', padding: 2, borderRadius: 6 }} aria-label="Project options">
+              <ChevronDownIcon />
+            </button>
           </div>
-          <span style={{ fontWeight: '600', fontSize: '15px', color: '#111827' }}>Ainyx Workspace</span>
+          <button style={{ background: 'transparent', border: 'none', color: '#f7faf8', display: 'inline-flex', padding: 2, borderRadius: 6 }} aria-label="More">
+            <MoreIcon />
+          </button>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <input
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search tasks..."
-            style={{
-              height: '34px',
-              padding: '0 12px 0 36px',
-              border: '1px solid #d1d5db',
-              borderRadius: '8px',
-              fontSize: '13px',
-              backgroundRepeat: 'no-repeat',
-              backgroundPosition: '10px center',
-              backgroundImage: "url(\"data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z' stroke='%239CA3AF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E\")",
-              width: '260px',
-              outline: 'none',
-            }}
-          />
-          <div
-            style={{
-              width: '32px',
-              height: '32px',
-              borderRadius: '50%',
-              background: '#f3f4f6',
-              border: '1px solid #e5e7eb',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: '14px',
-              color: '#374151',
-              fontWeight: '600',
-            }}
-          >
-            GJ
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <button style={{ width: 34, height: 34, borderRadius: 10, background: 'rgba(235,233,230,0.08)', border: '1px solid rgba(235,233,230,0.18)', color: '#f7faf8', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }} aria-label="Share">
+            <ShareIcon />
+          </button>
+          <div style={{ display: 'inline-flex', borderRadius: 999, background: 'rgba(24,24,27,1)', border: '1px solid rgba(235,233,230,0.32)', padding: 2, gap: 6 }}>
+            <button style={{ border: 'none', background: 'rgba(235,233,230,0.18)', color: '#f7faf8', fontSize: 12, fontWeight: 500, display: 'inline-flex', alignItems: 'center', gap: 6, padding: '6px 10px', borderRadius: 999 }} aria-label="Dark theme">
+              <MoonIcon /> Dark
+            </button>
+            <button style={{ border: 'none', background: 'transparent', color: '#f7faf8', fontSize: 12, fontWeight: 500, display: 'inline-flex', alignItems: 'center', gap: 6, padding: '6px 10px', borderRadius: 999 }} aria-label="Light theme">
+              <SunIcon /> Light
+            </button>
+          </div>
+          <div style={{ width: 32, height: 32, borderRadius: '50%', background: '#f3f4f6', border: '1px solid rgba(235,233,230,0.18)', display: 'grid', placeItems: 'center', color: '#0b0c10' }} aria-label="User profile">
+            <span aria-hidden="true" style={{ fontSize: 18 }}>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v1h20v-1c0-3.3-6.7-5-10-5z" />
+              </svg>
+            </span>
           </div>
         </div>
       </header>
 
-      <div
-        style={{
-          display: 'flex',
-          height: 'calc(100vh - 56px)',
-        }}
-      >
-        {/* Sidebar */}
-        <aside
-          style={{
-            width: '220px',
-            background: '#ffffff',
-            borderRight: '1px solid #e5e7eb',
-            padding: '16px 12px',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '4px',
-          }}
-        >
-          <NavItem label="Dashboard" active={view === 'dashboard'} onClick={() => setView('dashboard')} />
-          <NavItem label="Active Tasks" active={view === 'active'} onClick={() => setView('active')} />
-          <NavItem label="Completed" active={view === 'completed'} onClick={() => setView('completed')} />
-          <div style={{ flex: 1 }} />
-          <NavItem label="Settings" />
-          <NavItem label="Help" />
+      <div className="ainyx-layout">
+        <aside className="ainyx-sidebar" aria-label="Primary">
+          <button className="ainyx-sidebarItem" aria-label="GitHub" type="button"><GitHubIcon size={20} /></button>
+          <button className="ainyx-sidebarItem" aria-label="Postgres" type="button"><PostgresIcon size={20} /></button>
+          <button className="ainyx-sidebarItem" aria-label="Redis" type="button"><RedisIcon size={20} /></button>
+          <button className="ainyx-sidebarItem" aria-label="MongoDB" type="button"><MongoIcon size={20} /></button>
+          <button className="ainyx-sidebarItem" aria-label="Cube" type="button">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+              <path d="M12 10 2 17l10 7 10-7-10-7zM2 8l10-7 10 7M2 14l10 7 10-7" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
+          <button className="ainyx-sidebarItem" aria-label="Analytics" type="button">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M4 20h4V10H4v10zm6-10v10h4V10h-4zm6 6h4V10h-4v6z" />
+            </svg>
+          </button>
+          <button className="ainyx-sidebarItem" aria-label="Network" type="button">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+              <circle cx="12" cy="12" r="3" fill="currentColor" />
+              <path d="M12 2v4m0 12v4M2 12h4m12 0h4M4.93 4.93l2.83 2.83m8.48 8.48 2.83 2.83M4.93 19.07l2.83-2.83m8.48-8.48 2.83-2.83" strokeLinecap="round" />
+            </svg>
+          </button>
         </aside>
 
-        {/* Main */}
-        <main style={{ flex: 1, overflow: 'auto', padding: '24px' }}>
-          <div
-            style={{
-              maxWidth: '1200px',
-              margin: '0 auto',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '24px',
-            }}
-          >
-            {/* Breadcrumb */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', color: '#6b7280' }}>
-              <span style={{ color: '#6b7280' }}>Tasks</span>
-              <span>/</span>
-              <span style={{ color: '#374151' }}>Active</span>
-              <span style={{ margin: '0 4px' }}>/</span>
-              <span style={{ color: '#2563eb', fontWeight: '500' }}>Canvas Task</span>
-            </div>
-
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                gap: '16px',
-              }}
-            >
-              <div>
-                <h1 style={{ fontSize: '22px', fontWeight: '700', color: '#111827', margin: 0 }}>Canvas Task</h1>
-                <p style={{ fontSize: '14px', color: '#6b7280', margin: 0, marginTop: '4px' }}>
-                  Track and manage your assigned design tasks.
-                </p>
-              </div>
-
-              <div style={{ display: 'flex', gap: '8px' }}>
-                <Button variant="outline" startIcon="+">
-                  New Task
-                </Button>
-                <Button variant="primary" startIcon="●">
-                  Update Status
-                </Button>
-              </div>
-            </div>
-
-            <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '24px' }}>
-              {/* Left */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                <Card title={task.title} subtitle={task.description} fullWidth style={{ gap: '20px' }}>
-                  <div
-                    style={{
-                      display: 'flex',
-                      gap: '10px',
-                      flexWrap: 'wrap',
-                    }}
-                  >
-                    <Badge variant={task.statusColor}>{task.status}</Badge>
-                    <Badge variant="gray">{task.priority}</Badge>
-                    <Badge variant="gray">Due {task.due}</Badge>
-                    <Badge variant="purple">{task.category}</Badge>
+        <main className="ainyx-canvas">
+          <div className="ainyx-canvasGrid">
+            {SERVICES.map((service) => {
+              const status = STATUSES[service.tone]
+              const StatusIcon = status.Icon
+              const activeTabIndex = 0
+              return (
+                <div key={service.id} className={`ainyx-card${service.tone === 'error' ? ' ainyx-card--error' : ''}`}>
+                  <div className="ainyx-cardMeta">
+                    <div className="ainyx-cardHeader">
+                      <span className="ainyx-cardBrand"><service.Icon size={18} /></span>
+                      <span className="ainyx-cardTitle">{service.label}</span>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                      <span className="ainyx-badge">$0.03/HR</span>
+                      <button className="ainyx-iconBtn" aria-label="Settings" type="button"><SettingsIcon /></button>
+                    </div>
                   </div>
 
-                  <Divider />
-
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                    {steps.map((step, idx) => (
-                      <div
-                        key={step.id}
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '12px',
-                          padding: '8px 0',
-                        }}
-                      >
-                        <div
-                          style={{
-                            width: '22px',
-                            height: '22px',
-                            borderRadius: '50%',
-                            border: '2px solid #d1d5db',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            fontSize: '11px',
-                            color: step.done ? '#fff' : '#9ca3af',
-                            background: step.done ? '#2563eb' : '#fff',
-                            borderColor: step.done ? '#2563eb' : '#d1d5db',
-                            flexShrink: 0,
-                          }}
-                        >
-                          {step.done ? '✓' : idx + 1}
-                        </div>
-                        <span
-                          style={{
-                            fontSize: '14px',
-                            fontWeight: step.done ? '500' : '400',
-                            color: step.done ? '#374151' : '#9ca3af',
-                          }}
-                        >
-                          {step.label}
-                        </span>
+                  <div className="ainyx-metaGrid">
+                    {STATS.map((item) => (
+                      <div key={item.label} className="ainyx-metaItem">
+                        <span className="ainyx-metaLabel">{item.label}</span>
+                        <span className="ainyx-metaValue">{item.value}</span>
                       </div>
                     ))}
                   </div>
 
-                  <Divider />
-
-                  <div>
-                    <p
-                      style={{
-                        fontSize: '13px',
-                        fontWeight: '600',
-                        color: '#374151',
-                        marginBottom: '8px',
-                      }}
-                    >
-                      Recent Activity
-                    </p>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                      {activity.map((a, idx) => (
-                        <div
-                          key={idx}
-                          style={{
-                            fontSize: '13px',
-                            color: '#6b7280',
-                            padding: '6px 8px',
-                            background: '#f9fafb',
-                            borderRadius: '6px',
-                          }}
-                        >
-                          {a}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </Card>
-              </div>
-
-              {/* Right - Filters */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                <Card title="Filters" subtitle="Refine task views" fullWidth>
-                  <Input label="Filter by status" placeholder="Select..." />
-                  <Input label="Assignee" placeholder="Select..." />
-                  <Input label="Priority" placeholder="Select..." />
-                  <Button variant="secondary" fullWidth>
-                    Apply Filters
-                  </Button>
-                </Card>
-
-                <Card title="Quick Actions" fullWidth>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                    {['Mark as Complete', 'Reassign Task', 'Add Subtask'].map((a) => (
-                      <Button key={a} variant="outline" fullWidth startIcon="→">
-                        {a}
-                      </Button>
+                  <div className="ainyx-tabs" role="tablist">
+                    {TABS.map((tab, idx) => (
+                      <button key={tab} type="button" role="tab" aria-selected={idx === activeTabIndex} className="ainyx-tab" style={{ background: idx === activeTabIndex ? '#f7faf8' : 'transparent', color: idx === activeTabIndex ? '#0b0c10' : '#d1d3db' }}>
+                        {tab}
+                      </button>
                     ))}
                   </div>
-                </Card>
-              </div>
-            </div>
+
+                  <div className="ainyx-control">
+                    <div className="ainyx-slider">
+                      <span className="ainyx-sliderKnob" aria-hidden="true" />
+                    </div>
+                    <span className="ainyx-sliderField">0.02</span>
+                  </div>
+
+                  <div className="ainyx-footer">
+                    <span className="ainyx-status" style={{ color: status.color }}>
+                      <StatusIcon />
+                      <span>{service.status}</span>
+                    </span>
+                    <span className="ainyx-footerProvider">aws</span>
+                  </div>
+                </div>
+              )
+            })}
           </div>
         </main>
       </div>
+
+      <div className="ainyx-zoom">
+        <button className="ainyx-zoomBtn" type="button" aria-label="Zoom out">-</button>
+        <span className="ainyx-zoomLabel">100%</span>
+        <button className="ainyx-zoomBtn" type="button" aria-label="Zoom in">+</button>
+        <button className="ainyx-zoomBtn" type="button" aria-label="Help"><HelpIcon /></button>
+      </div>
     </div>
-  )
-}
-
-function NavItem({ label, active, onClick }) {
-  const base = {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '10px',
-    padding: '8px 12px',
-    borderRadius: '8px',
-    fontSize: '14px',
-    fontWeight: '500',
-    border: 'none',
-    background: 'transparent',
-    cursor: 'pointer',
-    width: '100%',
-    textAlign: 'left',
-    color: active ? '#111827' : '#6b7280',
-    background: active ? '#f3f4f6' : 'transparent',
-    transition: 'background 120ms ease',
-    fontFamily: 'inherit',
-  }
-
-  return (
-    <button style={base} onClick={onClick}>
-      <span style={{ fontSize: '16px', width: '20px' }}>{active ? '■' : '○'}</span>
-      {label}
-    </button>
   )
 }

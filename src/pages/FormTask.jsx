@@ -1,286 +1,202 @@
-import React, { useState } from 'react'
-import { Card, Badge, Button, Input, Select } from '../components'
+import React from 'react'
+import '../styles/form.css'
+import { CloseIcon, ChevronRightIcon, SearchIcon, SortIcon, ArrowLeftIcon, QuestionIcon } from '../components'
+
+const STEPS = [
+  { key: 'param', label: 'Paramètre promo', icon: '🏷' },
+  { key: 'clients', label: 'Données client', icon: '❤️' },
+  { key: 'periode', label: 'Période', icon: '📅' },
+  { key: 'indicators', label: 'Indicateurs', icon: '🗒' },
+]
+
+const INDICATORS = [
+  { id: 'conversion', name: 'Taux de conversion des ventes', help: 'Sales conversion rate definition.' },
+  { id: 'revenue', name: "Chiffre d'affaires total", help: 'Total Revenue definition.', active: true },
+  { id: 'margin', name: 'Marge brute totale', help: 'Total Gross Margin definition.' },
+  { id: 'repurchase', name: 'Taux de réachat', help: 'Repurchase rate definition.' },
+]
+
+const CATEGORIES = ['# Performance générale', '# Vente', '# Rentabilité', '# Clients', '4+']
+
+function SectionIcon() {
+  return (
+    <span className="formSectionIcon" aria-hidden="true">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M14 2v6h6M9 15l2 2 4-4" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+      <span className="formSectionBadge" aria-hidden="true">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M19 9h-4V5H9v4H5l7 7 7-7z" />
+        </svg>
+      </span>
+    </span>
+  )
+}
+
+function InlineIcon({ children, className = '', ...props }) {
+  return (
+    <span aria-hidden="true" className={`formInlineIcon ${className}`.trim()} {...props}>
+      {children}
+    </span>
+  )
+}
 
 export default function FormTask() {
-  const [form, setForm] = useState({
-    name: '',
-    email: '',
-    role: '',
-    department: '',
-    experience: '',
-    startDate: '',
-    skills: '',
-    coverLetter: '',
-  })
+  const [activeStep, setActiveStep] = React.useState('indicators')
+  const [selected, setSelected] = React.useState(["Chiffre d'affaires total"])
+  const [search, setSearch] = React.useState('')
 
-  const update = (field) => (e) => setForm((prev) => ({ ...prev, [field]: e.target.value }))
-
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    alert('Form submitted — check the browser console for values.')
-    console.log(form)
-  }
+  const toggle = (name) => setSelected((prev) => (prev.includes(name) ? prev.filter((n) => n !== name) : [...prev, name]))
 
   return (
-    <div
-      style={{
-        minHeight: '100vh',
-        background: '#f5f5f7',
-      }}
-    >
-      {/* Top bar */}
-      <header
-        style={{
-          height: '56px',
-          background: '#ffffff',
-          borderBottom: '1px solid #e5e7eb',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          padding: '0 24px',
-          position: 'sticky',
-          top: 0,
-          zIndex: 10,
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <div
-            style={{
-              width: '28px',
-              height: '28px',
-              background: '#2563eb',
-              borderRadius: '8px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: '#fff',
-              fontWeight: '700',
-              fontSize: '13px',
-            }}
-          >
-            A
-          </div>
-          <span style={{ fontWeight: '600', fontSize: '15px', color: '#111827' }}>Ainyx Workspace</span>
-        </div>
-
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <span
-            style={{
-              fontSize: '13px',
-              color: '#6b7280',
-              background: '#f3f4f6',
-              border: '1px solid #e5e7eb',
-              padding: '4px 10px',
-              borderRadius: '6px',
-            }}
-          >
-            2 of 5 sections completed
-          </span>
-          <div
-            style={{
-              width: '32px',
-              height: '32px',
-              borderRadius: '50%',
-              background: '#f3f4f6',
-              border: '1px solid #e5e7eb',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: '14px',
-              color: '#374151',
-              fontWeight: '600',
-            }}
-          >
-            GJ
-          </div>
-        </div>
+    <div className="App">
+      <header className="formHeader">
+        <button className="formQuit" type="button">
+          <CloseIcon /> Quitter
+        </button>
       </header>
 
-      <div
-        style={{
-          display: 'flex',
-          height: 'calc(100vh - 56px)',
-        }}
-      >
-        {/* Sidebar */}
-        <aside
-          style={{
-            width: '220px',
-            background: '#ffffff',
-            borderRight: '1px solid #e5e7eb',
-            padding: '16px 12px',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '4px',
-          }}
-        >
-          <NavItem label="Dashboard" />
-          <NavItem label="Form Task" active />
-          <NavItem label="Submissions" />
-          <NavItem label="Reports" />
-          <div style={{ flex: 1 }} />
-          <NavItem label="Help" />
+      <div className="formLayout">
+        <aside className="formSidebar" aria-label="Sidebar">
+          {STEPS.map((step) => (
+            <button
+              key={step.key}
+              className={`formSidebarItem${activeStep === step.key ? ' active' : ''}`}
+              type="button"
+              aria-current={activeStep === step.key ? 'true' : 'false'}
+              onClick={() => setActiveStep(step.key)}
+            >
+              <span className="formSidebarIcon">{step.icon}</span>
+              <span className="formSidebarLabel">{step.label}</span>
+              {step.key === 'indicators' && <InlineIcon><ChevronRightIcon /></InlineIcon>}
+            </button>
+          ))}
         </aside>
 
-        {/* Main content */}
-        <main style={{ flex: 1, overflow: 'auto', padding: '24px' }}>
-          <div
-            style={{
-              maxWidth: '880px',
-              margin: '0 auto',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '24px',
-            }}
-          >
-            <div>
-              <h1 style={{ fontSize: '22px', fontWeight: '700', color: '#111827', margin: 0 }}>Form Task</h1>
-              <p style={{ fontSize: '14px', color: '#6b7280', margin: 0, marginTop: '4px' }}>
-                Complete the fields below accurately. Required fields are marked with *.
-              </p>
+        <main className="formMain">
+          <div className="formPageTitle">
+            <SectionIcon />
+            <h1 className="formTitle">Performances Promotionnelles</h1>
+            <p className="formSubtitle">
+              Mesurer l’impact et l’efficacité des stratégies promotionnelles pour maximiser les résultats
+            </p>
+          </div>
+
+          <div className="formBreadcrumb">
+            <span>Formulaire</span>
+            <span className="formBreadcrumbSep">/</span>
+            <span className="formBreadcrumbCurrent">Indicateurs</span>
+          </div>
+
+          <div className="formSectionHeader">
+            <span className="formSectionIconSm" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </span>
+            <h2 className="formSectionTitle">Indicateurs</h2>
+          </div>
+
+          <div className="formFilters" aria-label="Active filters">
+            {['PANIER MOYEN', 'ROI'].map((chip) => (
+              <span key={chip} className="formChip">
+                {chip}
+                <button type="button" className="formChipClose" aria-label={`Remove ${chip}`}>
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" aria-hidden="true">
+                    <path d="M18 6L6 18M6 6l12 12" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </button>
+              </span>
+            ))}
+          </div>
+
+          <div className="formSearchWrap">
+            <InlineIcon className="formSearchIcon">
+              <SearchIcon />
+            </InlineIcon>
+            <input
+              className="formSearch"
+              placeholder="Rechercher un indicateur"
+              value={search}
+              onChange={(event) => setSearch(event.target.value)}
+            />
+            <div className="formSearchActions">
+              <button className="formSearchAction" type="button" aria-label="Clear">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                  <circle cx="12" cy="12" r="9" />
+                  <path d="M9 9l6 6M15 9l-6 6" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+              <button className="formSearchAction" type="button" aria-label="Sort">
+                <SortIcon />
+              </button>
             </div>
+          </div>
 
-            <form
-              onSubmit={handleSubmit}
-              style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}
-            >
-              <Card title="Personal Information" subtitle="Basic details about the candidate" fullWidth>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
-                  <Input label="Full Name *" placeholder="e.g. Ganesh Jayachandran" value={form.name} onChange={update('name')} />
-                  <Input label="Email Address *" placeholder="name@company.com" type="email" value={form.email} onChange={update('email')} />
-                </div>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
-                  <Select
-                    label="Role *"
-                    value={form.role}
-                    onChange={update('role')}
-                    placeholder="Select role"
-                    options={[
-                      { value: 'product-designer', label: 'Product Designer' },
-                      { value: 'ux-designer', label: 'UX Designer' },
-                      { value: 'ui-designer', label: 'UI Designer' },
-                      { value: 'visual-designer', label: 'Visual Designer' },
-                    ]}
-                  />
-                  <Select
-                    label="Department *"
-                    value={form.department}
-                    onChange={update('department')}
-                    placeholder="Select department"
-                    options={[
-                      { value: 'engineering', label: 'Engineering' },
-                      { value: 'design', label: 'Design' },
-                      { value: 'product', label: 'Product' },
-                      { value: 'marketing', label: 'Marketing' },
-                    ]}
-                  />
-                </div>
-              </Card>
+          <div className="formCategories" role="list" aria-label="Categories">
+            {CATEGORIES.map((category, idx) => (
+              <button key={category} className={`formCategory${idx === 0 ? ' active' : ''}`} type="button" role="listitem">
+                {category}
+              </button>
+            ))}
+          </div>
 
-              <Card title="Experience & Skills" subtitle="Your professional background" fullWidth>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
-                  <Input label="Years of Experience *" placeholder="e.g. 2 years" value={form.experience} onChange={update('experience')} />
-                  <Input label="Preferred Start Date" placeholder="YYYY-MM-DD" value={form.startDate} onChange={update('startDate')} />
-                </div>
-                <Input
-                  label="Key Skills (comma separated) *"
-                  placeholder="e.g. Figma, React, Design Systems"
-                  value={form.skills}
-                  onChange={update('skills')}
-                  helperText="Separate multiple skills with commas."
-                />
-              </Card>
-
-              <Card title="Additional Information" subtitle="Optional but recommended" fullWidth>
-                <Input
-                  label="Cover Letter / Notes"
-                  multiline
-                  rows={5}
-                  placeholder="Tell us why you're a great fit..."
-                  value={form.coverLetter}
-                  onChange={update('coverLetter')}
-                />
-              </Card>
-
-              <Card title="Review & Submit" fullWidth>
+          <div className="formList" role="list" aria-label="Indicators">
+            {INDICATORS.map((indicator) => {
+              const active = selected.includes(indicator.name)
+              return (
                 <div
-                  style={{
-                    display: 'grid',
-                    gridTemplateColumns: '1fr 1fr 1fr',
-                    gap: '16px',
-                    fontSize: '13px',
-                    color: '#6b7280',
+                  key={indicator.id}
+                  className={`formRow${active ? ' active' : ''}`}
+                  role="listitem"
+                  tabIndex={0}
+                  aria-pressed={active ? 'true' : 'false'}
+                  onClick={() => toggle(indicator.name)}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                      event.preventDefault()
+                      toggle(indicator.name)
+                    }
                   }}
                 >
-                  <ReviewRow label="Name" value={form.name} />
-                  <ReviewRow label="Email" value={form.email} />
-                  <ReviewRow label="Role" value={form.role ? form.role.replace('-', ' ').replace(/\b\w/g, (c) => c.toUpperCase()) : '—'} />
-                  <ReviewRow label="Department" value={form.department ? form.department.charAt(0).toUpperCase() + form.department.slice(1) : '—'} />
-                  <ReviewRow label="Experience" value={form.experience || '—'} />
-                  <ReviewRow label="Start Date" value={form.startDate || '—'} />
+                  <span className="formRowName">{indicator.name}</span>
+                  <button
+                    className="formHelp"
+                    type="button"
+                    aria-label="Help"
+                    onClick={(event) => {
+                      event.stopPropagation()
+                      alert('Description: ' + indicator.help)
+                    }}
+                  >
+                    <QuestionIcon />
+                  </button>
                 </div>
-              </Card>
-
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                }}
-              >
-                <Button variant="ghost" type="button">
-                  ← Back to Tasks
-                </Button>
-                <div style={{ display: 'flex', gap: '12px' }}>
-                  <Button variant="outline" type="button">
-                    Save Draft
-                  </Button>
-                  <Button variant="primary" type="submit" startIcon="→">
-                    Submit Form
-                  </Button>
-                </div>
-              </div>
-            </form>
+              )
+            })}
           </div>
         </main>
       </div>
+
+      <div className="formFooterWrap">
+        <div className="formFooterShadow" aria-hidden="true" />
+        <footer className="formFooter">
+          <div className="formFooterGroup">
+            <button className="formSecondary" type="button">
+              <ArrowLeftIcon /> Retour
+            </button>
+          </div>
+          <div className="formFooterCenter">
+            <span className="formFooterCount">1</span> / 10 indicateurs sélectionnés
+          </div>
+          <div className="formFooterGroup">
+            <button className="formSecondary" type="button">Réinitialiser</button>
+            <button className="formPrimary" type="button">Valider</button>
+          </div>
+        </footer>
+      </div>
     </div>
-  )
-}
-
-function ReviewRow({ label, value }) {
-  return (
-    <div>
-      <p style={{ fontSize: '12px', color: '#9ca3af', margin: '0 0 2px 0' }}>{label}</p>
-      <p style={{ fontSize: '14px', fontWeight: '500', color: '#111827', margin: 0 }}>{value}</p>
-    </div>
-  )
-}
-
-function NavItem({ label, active }) {
-  const base = {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '10px',
-    padding: '8px 12px',
-    borderRadius: '8px',
-    fontSize: '14px',
-    fontWeight: '500',
-    border: 'none',
-    background: 'transparent',
-    cursor: 'pointer',
-    width: '100%',
-    textAlign: 'left',
-    color: active ? '#111827' : '#6b7280',
-    background: active ? '#f3f4f6' : 'transparent',
-    transition: 'background 120ms ease',
-    fontFamily: 'inherit',
-  }
-
-  return (
-    <button style={base}>
-      <span style={{ fontSize: '16px', width: '20px', textAlign: 'center' }}>{active ? '■' : '○'}</span>
-      {label}
-    </button>
   )
 }

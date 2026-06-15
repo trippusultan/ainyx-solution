@@ -1,0 +1,341 @@
+.formHeader {
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 20px;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.formQuit {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #d1d5db;
+  background: transparent;
+  font-size: 14px;
+  font-weight: 500;
+  color: #111827;
+  padding: 7px 14px;
+  border-radius: 10px;
+}
+
+.formLayout {
+  min-height: calc(100vh - 52px);
+  display: flex;
+  gap: 14px;
+  padding: 14px;
+  background: #f5f6f8;
+}
+
+.formSidebar {
+  width: 224px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  box-shadow: 0 10px 20px rgba(148, 163, 184, 0.25);
+  align-self: flex-start;
+}
+
+.formSidebarItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  background: transparent;
+  border: none;
+  width: 100%;
+  color: #334155;
+}
+
+.formSidebarItem.active {
+  background: #0f172a;
+  color: #f7faf8;
+}
+
+.formSidebarIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  font-size: 16px;
+}
+
+.formSidebarLabel {
+  flex: 1;
+  text-align: left;
+}
+
+.formInlineIcon {
+  display: inline-flex;
+  color: inherit;
+}
+
+.formMain {
+  flex: 1;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 22px 24px 90px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.formPageTitle {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.formTitle {
+  font-size: 24px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+}
+
+.formSubtitle {
+  font-size: 14px;
+  color: #6b7280;
+  line-height: 22px;
+  margin: 0;
+}
+
+.formSectionHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.formSectionIconSm {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: #2563eb;
+  color: #ffffff;
+  border-radius: 8px;
+}
+
+.formSectionTitle {
+  font-size: 18px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+}
+
+.formFilters {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.formChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #eef2f7;
+  color: #1f2937;
+  border: 1px solid #e5e7eb;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.formChipClose {
+  background: transparent;
+  border: none;
+  color: #6b7280;
+  display: inline-flex;
+  padding: 2px;
+  border-radius: 6px;
+}
+
+.formSearchWrap {
+  position: relative;
+}
+
+.formSearch {
+  width: 100%;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  padding: 10px 12px;
+  padding-right: 82px;
+  font-size: 14px;
+  color: #111827;
+  background: #ffffff;
+  outline: none;
+}
+
+.formSearchIcon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9ca3af;
+  display: inline-flex;
+}
+
+.formSearchActions {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  gap: 4px;
+}
+
+.formSearchAction {
+  background: transparent;
+  border: none;
+  color: #6b7280;
+  display: inline-flex;
+  padding: 6px;
+  border-radius: 8px;
+}
+
+.formCategories {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.formCategory {
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  color: #111827;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.formCategory.active {
+  background: #0f172a;
+  border-color: #0f172a;
+  color: #f7faf8;
+}
+
+.formList {
+  margin-top: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.formRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 12px;
+  border-radius: 10px;
+  background: #ffffff;
+  border: 1px solid transparent;
+  color: #111827;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: left;
+}
+
+.formRow.active {
+  background: #eff6ff;
+  border-color: #bfdbfe;
+  color: #111827;
+}
+
+.formHelp {
+  background: transparent;
+  border: none;
+  color: #6b7280;
+  display: inline-flex;
+  padding: 4px;
+  border-radius: 6px;
+}
+
+.formFooterWrap {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.formFooterShadow {
+  height: 14px;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.08), transparent);
+  opacity: 0.55;
+}
+
+.formFooter {
+  height: 60px;
+  background: linear-gradient(to right, #ffffff, #f9fafb);
+  border-top: 1px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 22px;
+  gap: 14px;
+}
+
+.formFooterCenter {
+  font-size: 14px;
+  color: #111827;
+  font-weight: 600;
+  text-align: center;
+}
+
+.formFooterCount {
+  display: inline-grid;
+  place-items: center;
+  min-width: 26px;
+  height: 26px;
+  padding: 0 6px;
+  background: #0f172a;
+  color: #ffffff;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  margin-right: 6px;
+}
+
+.formFooterGroup {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.formSecondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  color: #111827;
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.formPrimary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #2563eb;
+  border: 1px solid #2563eb;
+  color: #ffffff;
+  padding: 8px 16px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+}
